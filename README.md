@@ -10,6 +10,10 @@ It answers one question honestly: **how much charge is left, and for how long.**
 voltage map, not a fuel gauge, so the bank is counted from energy in and out — and, once you run a discharge test,
 from what your own bank measured.
 
+> **Use at your own risk.** This is a hobby project, provided as is, without any warranty (see [LICENSE](LICENSE)).
+> It talks to mains-powered equipment and a battery bank; you alone are responsible for what you connect it to and
+> for every setting you change. It is not affiliated with or endorsed by any inverter, battery or cloud vendor.
+
 ![the admin](docs/admin.png)
 
 ## Hardware it was built and tested on
@@ -74,14 +78,24 @@ notifier/service.sh install                       # optional; or switch it on fr
 The cloud poller (optional): log in once in a real terminal, `python3 scripts/dess_login.py` (it stores only the
 token, in `~/.config/dessmonitor/`), then add `*/5 * * * * <path>/scripts/poll.sh` to your crontab.
 
+> **About the cloud mode.** It calls DessMonitor's web API with your own account, the way their web app does. That
+> API is not documented for third parties, and DessMonitor's terms of service may not allow this kind of use: read
+> them and decide for yourself. The local dongle mode (collector, admin, settings, notifications) does not depend on
+> the cloud or on any account at all.
+
 Checks (no inverter needed): `node admin/check.mjs`, `node admin/check_server.mjs`, `node admin/check_calibrate.mjs`,
 `python3 writer/check_writer.py`, `python3 notifier/check_rules.py`, `python3 notifier/check_notify.py`.
 `node admin/sandbox.mjs` runs the whole admin against a fake inverter.
 
 ## Writing settings: safety notes
 
-Changing an inverter's settings can damage the battery or cut power to the house. This project is careful, but it is
-**your** inverter:
+> **Warning.** Writing settings to an inverter can damage the inverter, the batteries and whatever is connected to
+> them, can cut power to the house, and can create a fire risk if charge voltages or currents are set wrong. The
+> authors take **no responsibility** for any damage, loss or injury. Check every value against **your own
+> inverter's manual and your battery's datasheet** before you write it; the ranges in this project come from one
+> manufacturer's manual for one model and may be wrong for yours. If you are not sure, do not write.
+
+This project is careful, but it is **your** inverter:
 
 - Nothing is written until you set a PIN, and every change needs it (only a scrypt hash is stored; 5 wrong PINs
   lock changes for 15 min, three locks in a row until `admin/pin.sh unlock` on the Mac itself).
