@@ -50,7 +50,7 @@ export default function Page() {
   useExpose('bot', { config: () => d, set: (patch) => setD((x) => ({ ...x, ...patch })), api: () => api })
 
   const act = async (path, body, okText) => {
-    if (pin.length < 6) return setMsg('введите PIN')
+    if (pin.length < 4) return setMsg('введите PIN')
     setBusy(true)
     const r = await post(path, { pin, ...body })
     setBusy(false)

@@ -11,7 +11,7 @@ NODE=/usr/local/bin/node
 [ -x "$NODE" ] || NODE=node
 case "$1" in
   set)
-    read -r -s -p "Новый PIN (6–12 цифр): " a; echo
+    read -r -s -p "Новый PIN (4–12 цифр): " a; echo
     read -r -s -p "Ещё раз: " b; echo
     if [ "$a" != "$b" ]; then echo "PIN не совпали, ничего не изменено."; exit 1; fi
     printf '%s' "$a" | "$NODE" pin.mjs set

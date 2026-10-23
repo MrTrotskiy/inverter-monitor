@@ -1,5 +1,5 @@
 // A whole admin against a FAKE inverter, to try changes without touching the real one:
-//   node admin/sandbox.mjs [--host 127.0.0.1] [--port 8801] [--pin 480913] [-- fake inverter flags, e.g. --battery]
+//   node admin/sandbox.mjs [--host 127.0.0.1] [--port 8801] [--pin 4829] [-- fake inverter flags, e.g. --battery]
 // starts writer/fake_inverter.py, a second collector reading it (other ports, its own data in a temp folder), this
 // admin's server on host:port with that data, a fake notifier service and a fake Telegram; prints the address and
 // the sandbox PIN, and stops everything on Ctrl-C. check_server.mjs uses the same stack.
@@ -12,7 +12,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const PY = '/usr/bin/python3'
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
-export function stack(port, fakeArgs = [], { host = '127.0.0.1', pin = '480913', tgPort = 18899 } = {}) {
+export function stack(port, fakeArgs = [], { host = '127.0.0.1', pin = '4829', tgPort = 18899 } = {}) {
   const dir = mkdtempSync(`${tmpdir()}/inv-admin-`)
   mkdirSync(`${dir}/dongle`, { recursive: true })
   mkdirSync(`${dir}/notify`, { recursive: true })
@@ -77,9 +77,9 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
       res.end('{"ok":true}')
     })
   }).listen(18899, '127.0.0.1')
-  const S = stack(Number(get('--port', 8801)), fake, { host: get('--host', '127.0.0.1'), pin: get('--pin', '480913') })
+  const S = stack(Number(get('--port', 8801)), fake, { host: get('--host', '127.0.0.1'), pin: get('--pin', '4829') })
   const s = await S.ready()
-  console.log(`sandbox: ${S.base}/settings  (fake inverter ${s ? 'on the line' : 'NOT on the line'}), PIN ${get('--pin', '480913')}, data ${S.dir}`)
+  console.log(`sandbox: ${S.base}/settings  (fake inverter ${s ? 'on the line' : 'NOT on the line'}), PIN ${get('--pin', '4829')}, data ${S.dir}`)
   process.on('SIGINT', () => (S.stop(), process.exit(0)))
   process.on('SIGTERM', () => (S.stop(), process.exit(0)))
 }

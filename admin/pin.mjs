@@ -15,7 +15,11 @@ const DIR = `${DATA}/admin`
 const PIN = `${DIR}/pin.json`
 const STATE = `${DIR}/pin-state.json`
 const LOG = `${DIR}/security.jsonl`
-export const RULES = { fails: 5, lockMin: 15, hardAfter: 3, minLen: 6, maxLen: 12 }
+// 4 digits are 10 000 PINs: the lock is what keeps them safe — 5 tries per 15 minutes, and after 3 locks in a row
+// no more tries at all until someone at the Mac runs `pin.sh unlock` (at most 15 guesses before that).
+export const RULES = { fails: 5, lockMin: 15, hardAfter: 3, minLen: 4, maxLen: 12 }
+// the most common 4-digit PINs beyond the patterns refused below (same digits, runs, repeated pairs)
+const COMMON = new Set(['1004', '2000', '6969', '1122', '1313', '2001', '1010', '2580', '0852', '1969', '1984', '2468', '1357', '0007', '7777'])
 const KDF = { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 }
 
 const read = (p, d) => {
@@ -71,7 +75,8 @@ export function checkPin(pin, ip = '?') {
 
 export function setPin(pin) {
   if (!new RegExp(`^\\d{${RULES.minLen},${RULES.maxLen}}$`).test(pin)) throw new Error(`PIN: от ${RULES.minLen} до ${RULES.maxLen} цифр`)
-  if (/^(\d)\1+$/.test(pin) || '0123456789012'.includes(pin) || '9876543210987'.includes(pin)) throw new Error('PIN слишком простой (одинаковые цифры или подряд)')
+  if (/^(\d)\1+$/.test(pin) || '0123456789012'.includes(pin) || '9876543210987'.includes(pin) || /^(\d\d)\1+$/.test(pin) || COMMON.has(pin))
+    throw new Error('PIN слишком простой (одинаковые цифры, подряд, повтор или из самых частых)')
   const salt = randomBytes(16)
   write(PIN, { algo: 'scrypt', ...KDF, maxmem: undefined, salt: salt.toString('hex'), hash: hash(pin, salt).toString('hex'), setAt: new Date().toISOString() })
   write(STATE, { fails: 0, locks: 0 })

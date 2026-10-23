@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { stack } from './sandbox.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
-const PIN = '480913'
+const PIN = '4829' // a 4-digit PIN, as the owner uses
 const results = []
 const filesUnder = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? filesUnder(`${d}/${e.name}`) : [`${d}/${e.name}`]))
 const check = (name, ok, note = '') => {

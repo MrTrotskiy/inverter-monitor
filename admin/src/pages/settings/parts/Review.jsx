@@ -22,7 +22,7 @@ export function Review({ changes, probs, conds, pin, onClose, onDone, revertOf, 
   const job = jobId ? jr?.job : null
   const fin = job && FINAL[job.state]
   const locked = !pin?.set || pin?.lockedUntil
-  const can = !locked && !refused.length && condOk && code.length >= 6 && !busy && !jobId
+  const can = !locked && !refused.length && condOk && code.length >= 4 && !busy && !jobId
 
   const fire = async () => {
     setBusy(true)

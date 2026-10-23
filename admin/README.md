@@ -56,9 +56,11 @@ on 127.0.0.1:5173 and sends `/api` to the running server.
 Every change (an inverter setting, the bot's config, the bot on/off, a test message) needs the PIN. Without a PIN
 set, the admin is view-only.
 
-- **The PIN** is set on the Mac itself: `admin/pin.sh set` (asks twice, hidden; 6–12 digits, not all the same or
-  in a row). Only a scrypt hash is kept, in `data/admin/pin.json` (mode 600, ignored by git). 5 wrong PINs lock
-  changes for 15 min; 3 such locks without a right PIN in between lock them until `admin/pin.sh unlock`.
+- **The PIN** is set on the Mac itself: `admin/pin.sh set` (asks twice, hidden; 4–12 digits; refused: all the
+  same, runs like 1234 / 4321, repeated pairs like 1212, and the most common PINs). Only a scrypt hash is kept, in
+  `data/admin/pin.json` (mode 600, ignored by git). 5 wrong PINs lock changes for 15 min; 3 such locks without a
+  right PIN in between lock them until `admin/pin.sh unlock` on the Mac — so a 4-digit PIN gets at most 15 guesses
+  before someone at the Mac has to step in.
   `pin.sh remove` forgets it, `pin.sh status` says what is set. Attempts (never the digits) go to
   `data/admin/security.jsonl`. The page sends the PIN with each change over the home LAN's plain HTTP.
 - **Settings** (`/settings`): `actions.mjs` checks the PIN, the setting (not grey, not cloud-only, in range, an
@@ -91,7 +93,9 @@ set, the admin is view-only.
   against the data files (if there are any).
 - `node check_server.mjs`: every change path in a sandbox: PIN, lock, refusals, a write, «вернуть», a red pair with
   the hold, the bot's config / on / off / test, the PIN nowhere on disk or in logs, nothing on battery.
+- `node check_pin.mjs`: the PIN rules: 4–12 digits, the obvious ones refused, the 15-minute lock, the hard lock after
+  three, unlock, the digits nowhere on disk.
 - `node check_calibrate.mjs`: the calibration on a made-up test day with a known truth.
 - `python3 ../writer/check_writer.py`: the writer against a fake inverter.
 - `node sandbox.mjs --host <LAN address> --port 8801`: the whole admin against a fake inverter, to try it by hand
-  (sandbox PIN 480913); a real inverter is never touched.
+  (sandbox PIN 4829); a real inverter is never touched.
