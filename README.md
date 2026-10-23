@@ -114,6 +114,10 @@ Not affiliated with Volt Polska, Ritar, Eybond or DessMonitor. Register maps: th
 [oleks-p/ha-eybond-local](https://github.com/oleks-p/ha-eybond-local); program numbers and ranges from Volt Polska's
 manual for SINUS PRO ULTRA 3000–7000.
 
+## Licence
+
+MIT — see [LICENSE](LICENSE). Use it at your own risk, above all the settings writing.
+
 ## Коротко українською
 
 Монітор резервного живлення для 12-вольтового інвертора з LiFePO4: кожні 5 с читає інвертор через його Wi-Fi донгл
