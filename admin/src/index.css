@@ -1,0 +1,12 @@
+/* The base: tailwind's preflight (no utilities are used), the dark ground, thin scrollbars in the app. */
+@import "tailwindcss";
+
+@layer base {
+  * { scrollbar-width: none; }
+  *::-webkit-scrollbar { display: none; }
+  [data-app] *, [data-scrollbar] { scrollbar-width: thin; scrollbar-color: rgba(128, 128, 140, 0.5) transparent; }
+  [data-app] *::-webkit-scrollbar { display: block; width: 8px; height: 8px; }
+  [data-app] *::-webkit-scrollbar-thumb { background: rgba(128, 128, 140, 0.5); border-radius: 4px; }
+  body { @apply font-sans; background: #0d0f14; color: #e6e7ea; overflow: hidden; }
+  :where(code, pre, kbd, samp, [style*="mono" i]) { font-variant-ligatures: none; }
+}

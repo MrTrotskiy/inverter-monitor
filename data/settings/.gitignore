@@ -1,0 +1,3 @@
+# the settings writer: jobs, journal, snapshots, current values, its lock — local only
+*
+!.gitignore

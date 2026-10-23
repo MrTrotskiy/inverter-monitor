@@ -1,0 +1,21 @@
+data/poll.err
+__pycache__/
+*.pyc
+# local notes: not part of the repository
+docs/transcripts/*.txt
+data/alert-state.json
+
+# This home's own settings: addresses, device ids, the chat, keys. Only config.example.json is shared.
+config.json
+*.env
+.env*
+!.env.example
+# readings, logs, PIN hashes, journals: every data folder keeps its own `*` .gitignore
+node_modules/
+admin/dist/
+.DS_Store
+# local working notes and extra local readings: this machine only
+CLAUDE.md
+.claude/
+*-session.txt
+admin/public/data/

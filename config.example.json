@@ -1,0 +1,29 @@
+{
+  "_": "Copy to config.json (ignored by git) and fill in. Every program reads it; nothing in it is ever printed.",
+  "dongle": {
+    "ip": "192.168.1.50",
+    "broadcast": "192.168.1.255"
+  },
+  "admin": {
+    "port": 8080,
+    "title": "Inverter"
+  },
+  "inverter": {
+    "_": "Shown on the settings page's passport; serial, firmware and pn are optional.",
+    "model": "Volt Polska SINUS PRO ULTRA 3000 12/230 V",
+    "bank": "2 × Ritar 12.8 V 100 Ah LiFePO4",
+    "serial": "",
+    "firmware": "",
+    "pn": ""
+  },
+  "cloud": {
+    "_": "Only for the DessMonitor cloud poller (scripts/). The company key is the one the DessMonitor web app sends; pn/sn/devcode/devaddr are your device's, from the web app.",
+    "companyKey": "",
+    "device": { "pn": "", "sn": "", "devcode": 0, "devaddr": 1 }
+  },
+  "telegram": {
+    "_": "Only for notifications. botEnv: a file holding BOT_TOKEN=...; chatId: your own chat with that bot.",
+    "botEnv": "~/.config/inverter-monitor/bot.env",
+    "chatId": ""
+  }
+}

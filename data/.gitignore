@@ -1,0 +1,4 @@
+# every reading, log, PIN hash and local state stays on the machine that made it
+*
+!.gitignore
+!*/

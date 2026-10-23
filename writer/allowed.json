@@ -1,0 +1,21 @@
+{
+  "_": "The only registers the writer may change, raw words. Ranges from Volt's manual (12 V model); the admin's catalog (admin/src/pages/settings/catalog.js) must agree, checked by admin/check.mjs. Anything else is refused before the dongle is touched.",
+  "301": { "name": "output priority", "lo": 0, "hi": 3 },
+  "302": { "name": "input range", "lo": 0, "hi": 1 },
+  "303": { "name": "buzzer", "lo": 0, "hi": 3 },
+  "305": { "name": "backlight", "lo": 0, "hi": 1 },
+  "306": { "name": "screen returns home", "lo": 0, "hi": 1 },
+  "307": { "name": "energy saving", "lo": 0, "hi": 1 },
+  "308": { "name": "restart after overload", "lo": 0, "hi": 1 },
+  "309": { "name": "restart after overheat", "lo": 0, "hi": 1 },
+  "310": { "name": "overload to bypass", "lo": 0, "hi": 1 },
+  "320": { "name": "output voltage x0.1", "lo": 2200, "hi": 2400, "only": [2200, 2300, 2400] },
+  "321": { "name": "output frequency x0.01", "lo": 5000, "hi": 6000, "only": [5000, 6000] },
+  "324": { "name": "C.V. voltage x0.1", "lo": 120, "hi": 155 },
+  "325": { "name": "float voltage x0.1", "lo": 120, "hi": 155 },
+  "327": { "name": "low DC on mains x0.1", "lo": 100, "hi": 140 },
+  "329": { "name": "low DC off-grid x0.1", "lo": 100, "hi": 135 },
+  "331": { "name": "charger source", "lo": 0, "hi": 3 },
+  "332": { "name": "max charge current x0.1", "lo": 100, "hi": 1000 },
+  "333": { "name": "max AC charge current x0.1", "lo": 20, "hi": 600 }
+}

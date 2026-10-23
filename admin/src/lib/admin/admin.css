@@ -1,0 +1,11 @@
+.adm-digit { display: inline-block; animation: adm-roll 0.42s cubic-bezier(.2,.9,.25,1.15) both; }
+@keyframes adm-roll {
+  from { transform: translateY(-45%) scaleY(0.85); opacity: 0; filter: blur(3px); }
+  to { transform: none; opacity: 1; filter: none; }
+}
+.adm-flow { animation: adm-flow linear infinite; }
+@keyframes adm-flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -32; } }
+.adm-pulse { animation: adm-pulse 1.6s ease-in-out infinite; }
+@keyframes adm-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+.adm-btn { transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.adm-btn:hover { border-color: rgba(255,255,255,0.35) !important; }
