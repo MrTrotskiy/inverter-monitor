@@ -155,7 +155,7 @@ export default function Page() {
           <p style={{ margin: '0 0 10px' }}>Нажмите строку: шкала — что разрешает инвертор, зелёное — что хорошо для банка, белая черта — сейчас. Изменение — черновик; «проверить» покажет, что будет, и запишет с PIN. Красное — удерживать кнопку 2 с.</p>
           <p style={{ margin: '0 0 10px' }}>Запись — только когда инвертор на связи, дом от сети и нет сильного заряда. По одному регистру: записать, прочитать, сверить; не совпало — всё записанное возвращается. Каждый шаг — в журнале, там же «вернуть».</p>
           <p style={{ margin: '0 0 10px' }}><span style={{ color: '#32d583' }}>●</span> безопасно · <span style={{ color: '#fdb022' }}>●</span> осторожно · <span style={{ color: '#f97066' }}>●</span> опасно · <span style={{ color: '#667085' }}>●</span> не трогаем</p>
-          <p style={{ margin: '0 0 10px', color: 'var(--sk-soft)' }}>Источники: инструкция Volt Polska SINUS PRO ULTRA 3000–7000 (2026-07-03), карта Modbus SMG-II (github.com/syssi/esphome-smg-ii), спецификация Ritar.</p>
+          <p style={{ margin: '0 0 10px', color: 'var(--sk-soft)' }}>Источники: инструкция производителя инвертора (2026-07-03), карта Modbus SMG-II (github.com/syssi/esphome-smg-ii), спецификация Ritar.</p>
         </div>
       </Drawer>
     </Scene>

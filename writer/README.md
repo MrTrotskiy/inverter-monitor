@@ -14,10 +14,10 @@ Changes the inverter's settings through the dongle, one job at a time. It is sta
      back from the snapshot (read first; written only if it changed; read back), the link taken again if it broke;
   5. reads the settings again (`data/settings/current.json`), journals every write and rollback
      (`data/settings/journal.jsonl`), removes `yield.json`; the collector binds again and reads on.
-- `allowed.json`: the only registers it may write, with their raw ranges (Volt's manual, 12 V model). Anything else
+- `allowed.json`: the only registers it may write, with their raw ranges (the inverter's manual, 12 V model). Anything else
   is refused before the dongle is touched. `admin/check.mjs` checks that the admin's catalog agrees.
 - `eybond.py`: Eybond framing and Modbus RTU (read, write single, write multiple).
-- `fake_inverter.py`: a fake dongle + inverter for tests (the real words of 2026-10-23, Volt's rules, faults on
+- `fake_inverter.py`: a fake dongle + inverter for tests (the real words of 2026-10-23, the manual's rules, faults on
   demand: on battery, charging hard, refuse a register, ignore writes, no answer, drop the link, no function 6).
 - `check_writer.py`: 16 checks end to end against the fake, with the real collector in a sandbox.
 

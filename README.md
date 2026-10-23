@@ -4,7 +4,7 @@ A home backup-power monitor for a 12 V off-grid inverter with a LiFePO4 bank: it
 its Wi-Fi dongle every 5 seconds, keeps every reading, and shows in a dark web admin on the home LAN how much charge
 is left, how long it will last, what happened on any day, and — behind a PIN — lets you change the inverter's
 settings safely and set up Telegram notifications. It can also poll the DessMonitor cloud (the platform behind the
-SmartESS / ESS SMART apps).
+SmartESS app).
 
 It answers one question honestly: **how much charge is left, and for how long.** The inverter's own percentage is a
 voltage map, not a fuel gauge, so the bank is counted from energy in and out — and, once you run a discharge test,
@@ -18,8 +18,11 @@ from what your own bank measured.
 
 ## Hardware it was built and tested on
 
-- **Inverter:** Volt Polska SINUS PRO ULTRA 3000 12/230 V (1500 W continuous / 3000 VA peak, 12 V, 100 A MPPT
-  30–500 V, Wi-Fi with the ESS SMART app). It reports device type 0x3A00 and Modbus protocol 1.
+- **Inverter:** a 12 V off-grid hybrid inverter, 230 V output, 1500 W continuous / 3000 VA peak, with a 100 A MPPT
+  solar input (30–500 V) and a built-in mains charger (up to 60 A), monitored through a Wi-Fi dongle. Over Modbus it
+  reports device type 0x3A00 and protocol 1, and it speaks the SMG-II-family register map (below). Many brands sell
+  inverters built on this design; if yours has these specs, an Eybond dongle and answers Modbus as described in
+  `collector/README.md`, it is likely the same family.
 - **Dongle:** the Eybond Wi-Fi datalogger that comes with it (SmartESS / DessMonitor cloud).
 - **Bank:** 2 × Ritar R-LFP12.8V100AH-MINI (12.8 V 100 Ah LiFePO4) in parallel: 200 Ah, 2560 Wh nameplate.
 - **Host:** an always-on Mac (macOS, LaunchAgents); Python 3 as shipped with macOS, Node ≥ 20.
@@ -83,7 +86,8 @@ token, in `~/.config/dessmonitor/`), then add `*/5 * * * * <path>/scripts/poll.s
 > them and decide for yourself. The local dongle mode (collector, admin, settings, notifications) does not depend on
 > the cloud or on any account at all.
 
-Checks (no inverter needed): `node admin/check.mjs`, `node admin/check_server.mjs`, `node admin/check_calibrate.mjs`,
+Checks (no inverter needed): `node admin/check.mjs`, `node admin/check_server.mjs`, `node admin/check_pin.mjs`,
+`node admin/check_calibrate.mjs`,
 `python3 writer/check_writer.py`, `python3 notifier/check_rules.py`, `python3 notifier/check_notify.py`.
 `node admin/sandbox.mjs` runs the whole admin against a fake inverter.
 
@@ -97,8 +101,9 @@ Checks (no inverter needed): `node admin/check.mjs`, `node admin/check_server.mj
 
 This project is careful, but it is **your** inverter:
 
-- Nothing is written until you set a PIN, and every change needs it (only a scrypt hash is stored; 5 wrong PINs
-  lock changes for 15 min, three locks in a row until `admin/pin.sh unlock` on the Mac itself).
+- Nothing is written until you set a PIN (4–12 digits; obvious ones like 1111 or 1234 are refused), and every change
+  needs it. Only a scrypt hash is stored; 5 wrong PINs lock changes for 15 min, three locks in a row until
+  `admin/pin.sh unlock` on the Mac itself — at most 15 guesses in all, which is what keeps a 4-digit PIN safe.
 - Only the registers in `writer/allowed.json`, within the manual's ranges, can be written. Settings marked grey
   (equalisation for LiFePO4, output mode, protection limits) never open; red ones need a 2-second hold.
 - A write happens only when the inverter is on the line, on mains (never during an outage) and not charging hard.
@@ -123,10 +128,10 @@ This project is careful, but it is **your** inverter:
     common/      config.json reader, LaunchAgent writer
     data/        everything measured and every local state (ignored by git)
 
-Not affiliated with Volt Polska, Ritar, Eybond or DessMonitor. Register maps: the SMG-II map published in
+Not affiliated with any inverter maker, Ritar, Eybond or DessMonitor. Register maps: the SMG-II map published in
 [syssi/esphome-smg-ii](https://github.com/syssi/esphome-smg-ii) and the field list of
-[oleks-p/ha-eybond-local](https://github.com/oleks-p/ha-eybond-local); program numbers and ranges from Volt Polska's
-manual for SINUS PRO ULTRA 3000–7000.
+[oleks-p/ha-eybond-local](https://github.com/oleks-p/ha-eybond-local); program numbers and ranges from the inverter
+maker's manual for this model (12 V version) — check them against your own inverter's manual.
 
 ## Licence
 
@@ -137,6 +142,6 @@ MIT — see [LICENSE](LICENSE). Use it at your own risk, above all the settings 
 Монітор резервного живлення для 12-вольтового інвертора з LiFePO4: кожні 5 с читає інвертор через його Wi-Fi донгл
 (локально, без хмари), зберігає всі показання і показує в темній адмінці в домашній мережі, скільки заряду лишилось і
 на скільки вистачить. За PIN-кодом — безпечна зміна налаштувань інвертора (по одному регістру, з перевіркою і
-відкатом) та сповіщення в Telegram. Зібрано й перевірено на Volt Polska SINUS PRO ULTRA 3000 12/230 В і 2 × Ritar
-12,8 В 100 А·год; інші інвертори родини SMG / SMG-II з донглом Eybond мають працювати, але не перевірені. Усе своє
+відкатом) та сповіщення в Telegram. Зібрано й перевірено на 12-вольтовому гібридному інверторі 1500 Вт / 3000 ВА з
+MPPT-входом і донглом Eybond та 2 × Ritar 12,8 В 100 А·год; інші інвертори родини SMG / SMG-II з донглом Eybond мають працювати, але не перевірені. Усе своє
 (адреси, ідентифікатори, чат) — у `config.json`, який не потрапляє в git. Інтерфейс — російською.

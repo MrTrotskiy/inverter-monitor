@@ -1,5 +1,5 @@
 {
-  "_": "The only registers the writer may change, raw words. Ranges from Volt's manual (12 V model); the admin's catalog (admin/src/pages/settings/catalog.js) must agree, checked by admin/check.mjs. Anything else is refused before the dongle is touched.",
+  "_": "The only registers the writer may change, raw words. Ranges from the inverter's manual (12 V model); the admin's catalog (admin/src/pages/settings/catalog.js) must agree, checked by admin/check.mjs. Anything else is refused before the dongle is touched.",
   "301": { "name": "output priority", "lo": 0, "hi": 3 },
   "302": { "name": "input range", "lo": 0, "hi": 1 },
   "303": { "name": "buzzer", "lo": 0, "hi": 3 },

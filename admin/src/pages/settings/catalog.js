@@ -1,7 +1,8 @@
 // The inverter's settings: what each one is, where it lives (Modbus register, panel program), what the inverter
 // allows, what is safe for this bank, and the values read. No JSX, no writes: a description and checks only.
 //
-// Sources: Volt Polska's manual SINUS PRO ULTRA 3000–7000 (PL, 2026-07-03): programs, ranges, defaults for 12 V;
+// Sources: the inverter maker's manual for this model (12 V version, edition of 2026-07-03): programs, ranges,
+// defaults;
 // the SMG-II Modbus map (github.com/syssi/esphome-smg-ii): registers and enum values; ha-eybond-local smg.py
 // (341–343); the DessMonitor cloud's controls; Ritar's spec (charge 14.2–14.6 V, end of discharge 11.2 V, 50 A
 // recommended).
@@ -16,10 +17,10 @@ export const READ = {
 }
 export const CLOUD = { at: '2026-09-18', values: { cvTime: 10 } } // "Time from C.V to Floating Charge 10"
 
-// the passport: what is the same for every unit of this model; this unit's own serial, firmware, PN and the dongle's
-// address come from config.json (inverter.*, dongle.ip) through /api/settings and are added on the page
+// the passport: what is the same for every unit of this kind; the model's name, this unit's serial, firmware, PN and
+// the dongle's address come from config.json (inverter.*, dongle.ip) through /api/settings and are added on the page
 export const IDENTITY = [
-  ['модель', 'Volt Polska SINUS PRO ULTRA 3000 12/230 В'],
+  ['тип', 'гибридный инвертор 12 В / 230 В, MPPT'],
   ['мощность', '1500 Вт (рег. 643), пик 3000 ВА'],
   ['Modbus', 'адрес 1 (П25), протокол 1, тип 0x3A00'],
 ]
@@ -55,7 +56,7 @@ export const SETTINGS = [
   V({ id: 'cv', group: 'charge', reg: 324, prog: 26, name: 'Напряжение заряда (C.V.)', kind: 'num', risk: 'danger', min: 12, max: 15.5, ok: [14.2, 14.6], def: 14.1,
     why: 'выше 14,6 — перезаряд, BMS отключит банк; ниже 14,2 банк не добирает (Ritar 14,2–14,6)' }),
   V({ id: 'float', group: 'charge', reg: 325, prog: 27, name: 'Поддержка (float)', kind: 'num', risk: 'danger', min: 12, max: 15.5, ok: [13.5, 14.6], def: 13.5,
-    why: 'для LiFePO4 Volt советует float = C.V.; не выше C.V.' }),
+    why: 'для LiFePO4 инструкция советует float = C.V.; не выше C.V.' }),
   { id: 'cvTime', group: 'charge', reg: null, prog: 32, name: 'Время C.V. → float', kind: 'num', risk: 'care', unit: 'мин', digits: 0, step: 5, min: 5, max: 900, ok: [30, 120],
     source: 'cloud', why: '10 мин мало: при падении 0,7 В в проводах банк не успевает дозарядиться. Регистр не найден — только через облако' },
   A({ id: 'maxCharge', group: 'charge', reg: 332, prog: 2, name: 'Ток заряда, всего', kind: 'num', risk: 'care', min: 10, max: 100, ok: [20, 50], def: 60,
@@ -65,7 +66,7 @@ export const SETTINGS = [
   { id: 'chargeSrc', group: 'charge', reg: 331, prog: 16, name: 'Чем заряжать', kind: 'enum', risk: 'care',
     options: [{ v: 0, label: 'сеть' }, { v: 1, label: 'сначала PV' }, { v: 2, label: 'PV и сеть' }, { v: 3, label: 'только PV', bad: 'панелей нет — банк перестанет заряжаться' }],
     why: 'панелей нет, заряжает только сеть' },
-  { id: 'eq', group: 'charge', reg: 313, prog: 33, name: 'Выравнивание (EQ)', kind: 'bool', risk: 'locked', why: 'для LiFePO4 запрещено (инструкция Volt)' },
+  { id: 'eq', group: 'charge', reg: 313, prog: 33, name: 'Выравнивание (EQ)', kind: 'bool', risk: 'locked', why: 'для LiFePO4 запрещено (инструкция инвертора)' },
 
   // ── protection ──
   V({ id: 'lowOff', group: 'protect', reg: 329, prog: 29, name: 'Отключение от батареи', kind: 'num', risk: 'danger', min: 10, max: 13.5, ok: [11.5, 12.2], def: 10.5,

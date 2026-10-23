@@ -9,8 +9,8 @@
     "title": "Inverter"
   },
   "inverter": {
-    "_": "Shown on the settings page's passport; serial, firmware and pn are optional.",
-    "model": "Volt Polska SINUS PRO ULTRA 3000 12/230 V",
+    "_": "Shown on the settings page's passport; all optional.",
+    "model": "your inverter's model",
     "bank": "2 × Ritar 12.8 V 100 Ah LiFePO4",
     "serial": "",
     "firmware": "",
